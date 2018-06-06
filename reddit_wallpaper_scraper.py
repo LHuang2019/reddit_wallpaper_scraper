@@ -9,8 +9,9 @@ reddit_instance = praw.Reddit(client_id = 'R__rt8SuE-XbAA',
                               password = password,
                               user_agent = 'reddit_wallpaper_scraper_v1')
 
-subreddit = reddit_instance.subreddit('python')
-hot_python = subreddit.hot(limit=5)
+subreddit = reddit_instance.subreddit('Wallpapers')
+hot_post = subreddit.hot(limit=5)
 
-for submission in hot_python:
-    print(submission)
+for submission in hot_post:
+    if not submission.over_18:
+        print(submission.url)
