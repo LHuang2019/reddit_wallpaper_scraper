@@ -1,30 +1,8 @@
-import praw
-import ctypes
-import os
-import requests
+import util
 
-username = input("input reddit username: ")
-password = input("input reddit password: ")
+wallpaper_subreddit = util.get_subreddit('wallpaper')
+top_posts = util.get_top_posts(wallpaper_subreddit, 1)
+image_urls = util.get_image_urls(top_posts)
 
-reddit_instance = praw.Reddit(client_id = 'R__rt8SuE-XbAA',
-                              client_secret = 'ME7w-NDfmaHRHIz2xDDtg3V3fQA',
-                              username = username,
-                              password = password,
-                              user_agent = 'reddit_wallpaper_scraper_v1')
-
-subreddit = reddit_instance.subreddit('Wallpapers')
-hot_post = subreddit.hot(limit=1)
-
-wallpaper_url = ''
-
-for submission in hot_post:
-    if not submission.over_18:
-        wallpaper_url = submission.url
-
-'''
-if not os.path.exists("stored_backgrounds"):
-		os.makedirs("stored_backgrounds")
-'''
-
-imageFilename = "bg.jpg"
-open(imageFilename, "wb").write(requests.get(wallpaper_url).content)
+for url in image_urls:
+    print(url)
