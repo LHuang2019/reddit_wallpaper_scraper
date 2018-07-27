@@ -1,4 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
+
+# directory for storing downloaded image
+wallpapers
+
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
