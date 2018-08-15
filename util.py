@@ -14,7 +14,7 @@ def get_subreddit(subreddit_name):
     return reddit_instance.subreddit(subreddit_name)
 
 
-def get_top_posts(subreddit, num_post, time='day'):
+def get_top_posts(subreddit, num_post, time='all'):
     return subreddit.top(limit=num_post, time_filter=time)
 
 

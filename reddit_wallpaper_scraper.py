@@ -26,10 +26,10 @@ POST_TYPE_OPTIONS = [
     "top"
 ]
 
-post_type_default = StringVar()
-post_type_default.set(POST_TYPE_OPTIONS[0]) # default value
+post_type_selection = StringVar()
+post_type_selection.set(POST_TYPE_OPTIONS[0]) # default value
 
-post_type_menu = OptionMenu(frame, post_type_default, *POST_TYPE_OPTIONS)
+post_type_menu = OptionMenu(frame, post_type_selection, *POST_TYPE_OPTIONS)
 post_type_menu.config(width=15)
 post_type_menu.grid(row=1, column=1)
 
@@ -43,19 +43,27 @@ post_num = StringVar(None)
 post_num_entry = Entry(frame, textvariable=post_num, width=20)
 post_num_entry.grid(row=2, column=1)
 
-button = Button(frame, text="Change wallpaper")
+
+def get_reddit_wallpaper():
+    subreddit_str = str(subreddit.get())
+    post_num_int = int(post_num.get())
+
+    wallpaper_subreddit = util.get_subreddit(subreddit_str)
+    if post_type_selection.get() == 'hot':
+        posts = util.get_hot_posts(wallpaper_subreddit, post_num_int)
+    else:
+        posts = util.get_top_posts(wallpaper_subreddit, post_num_int)
+
+    image_urls = util.get_image_urls(posts)
+    image_url = image_urls[randint(0, len(image_urls) - 1)]
+    image_file_path = util.download_image_url(image_url, subreddit_str)
+    util.set_windows_desktop_background(image_file_path)
+
+
+button = Button(frame,
+                command=get_reddit_wallpaper,
+                text="Change wallpaper")
 button.grid(columnspan=2)
 
 frame.pack()
 root.mainloop()
-
-subreddit = 'wallpapers'
-post_nums = 15
-
-
-wallpaper_subreddit = util.get_subreddit(subreddit)
-hot_posts = util.get_hot_posts(wallpaper_subreddit, post_nums)
-image_urls = util.get_image_urls(hot_posts)
-image_url = image_urls[randint(0, post_nums - 1)]
-image_file_path = util.download_image_url(image_url, subreddit)
-util.set_windows_desktop_background(image_file_path)
